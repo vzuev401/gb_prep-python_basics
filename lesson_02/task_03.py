@@ -1,12 +1,3 @@
-# months_list = [
-#     *(['winter'] * 2),
-#     *(['spring'] * 3),
-#     *(['summer'] * 3),
-#     *(['autumn'] * 3),
-#     *(['winter'] * 1),
-# ]
-
-# This initialization is cheaper (and readable maybe)
 months_list = [
     'winter',
     'winter',
