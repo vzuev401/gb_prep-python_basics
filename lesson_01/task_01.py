@@ -40,19 +40,13 @@ users_values = []
 
 # Prompt for a user's input while an input line is not empty.
 while (users_input := input('Input some value (Leave line empty to stop the loop): ')) != '':
-    # Try to cast an input in an order:
-    #   - int;
-    #   - float;
-    #   - str (leave as str).
     try:
-        users_input = int(users_input)
+        users_float = float(users_input)
+        users_value = int(users_float) if users_float.is_integer() else users_float
     except ValueError:
-        try:
-            users_input = float(users_input)
-        except ValueError:
-            pass
+        users_value = users_input
 
-    users_values.append(users_input)
+    users_values.append(users_value)
 
 print('\nUser values: ')
 for var in users_values:
