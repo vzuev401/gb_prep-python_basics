@@ -7,8 +7,7 @@ user_input = input(
 user_list = user_input.split(';')
 processed_user_list = user_list.copy()
 
-# `len(l) - 1` guarantees that
-# an index `i` will be less or equal than l.index(l[-2])
+# `len(l) - 1` guarantees that `l[i + 1]` will exists
 for i in range(0, len(l := processed_user_list) - 1, 2):
     l[i], l[i + 1] = l[i + 1], l[i]
 
