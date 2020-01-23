@@ -1,38 +1,41 @@
 from pprint import pprint
 
-
-details_fields = (
+# Note: first field will be used as title at print
+DETAILS_FIELDS = (
     ('name', str),
     ('price', float),
     ('count', int),
     ('unit', str),
 )
-
-message_input = 'Enter a command (`help` for available commands): '
-message_help = \
+MESSAGE_INPUT = 'Enter a command (`help` for available commands): '
+MESSAGE_HELP = \
     f'Available commands:\n' \
-    f'    {"add":<10} - to create a new position\n' \
-    f'    {"analytics":<10} - to print an analytics\n' \
-    f'    {"goods":<10} - to print info about goods as-is\n' \
-    f'    {"help":<10} - to print current message\n' \
-    f'    {"stop":<10} - to exit\n'
+    f'    "add"        - to create a new position\n' \
+    f'    "analytics"  - to print an analytics\n' \
+    f'    "goods"      - to print info about goods as-is\n' \
+    f'    "help"       - to print current message\n' \
+    f'    "stop"       - to exit\n'
 
 goods = []
 
-while (user_input := input(message_input).lower()) != 'stop':
+while (user_input := input(MESSAGE_INPUT).lower()) != 'stop':
 
     if user_input == 'add':
         print('Fill fields:')
 
         details = {}
-        for field, field_type in details_fields:
+        for field, field_type in DETAILS_FIELDS:
             details[field] = field_type(input(f'  {field:<8}: '))
-        goods.append((len(goods) + 1, details))
 
-        print(f'\nAdded "{goods[-1][1]["name"]}" - {goods[-1][0]}\n')
+        item_id = len(goods) + 1
+        title_field_name = DETAILS_FIELDS[0][0]
+
+        goods.append((item_id, details))
+
+        print(f'\nAdded "{details[title_field_name]}" - {item_id}\n')
 
     elif user_input == 'analytics':
-        analytics = {field: [] for field, _ in details_fields}
+        analytics = {field: [] for field, _ in DETAILS_FIELDS}
 
         for _, details in goods:
             for field, value in details.items():
@@ -48,5 +51,5 @@ while (user_input := input(message_input).lower()) != 'stop':
         print()
 
     else:
-        print(message_help)
+        print(MESSAGE_HELP)
 
