@@ -11,6 +11,11 @@
 """
 
 
+from pprint import pprint
+from random import choices, choice
+from string import digits, ascii_letters
+
+
 class WarehouseItemError(Exception):
     ...
 
@@ -71,6 +76,15 @@ class Warehouse:
 
         return items
 
+    @classmethod
+    def global_search(cls, search_word: str):
+        return [
+            (instance, item)
+            for instance in cls.__instances
+            for item in instance.items
+            if search_word in item.name
+        ]
+
 
 class OfficeEquipment:
     def __init__(self, name: str):
@@ -110,6 +124,7 @@ class Xerox(OfficeEquipment):
 warehouse = Warehouse('some addr')
 duplicated_warehouse = Warehouse('some addr')
 
+
 duplicated_warehouse.store(Printer('printer 1', 'P!'))
 warehouse.store(Printer('printer 1', 'P@'))
 duplicated_warehouse.store(Printer('printer 2', 'P@'))
@@ -133,6 +148,7 @@ except DuplicatedItemError:
     print()
 # \\ End
 
+
 warehouse.store(Scanner('scanner 2', 'S@'))
 
 warehouse.store(Xerox('xerox 1', 'X!'))
@@ -140,6 +156,7 @@ duplicated_warehouse.store(Xerox('xerox 1', 'X@'))
 duplicated_warehouse.store(Xerox('xerox 2', 'X@'))
 duplicated_warehouse.store(Xerox('xerox 3', 'X#'))
 warehouse.store(Xerox('xerox 3', 'X#'))
+
 
 print('Items with "2":')
 print(warehouse.search(search_word=' 2'))
@@ -153,6 +170,7 @@ print('Items with "2"')
 print(duplicated_warehouse.search(search_word=' 2'))
 print()
 
+
 # Trying to move a missing item
 #
 # // Start
@@ -164,3 +182,19 @@ except MissedItemError:
     print('MISSED!!~', another_special_scanner)
     print()
 # \\ End
+
+
+special_warehouse = Warehouse('another addr')
+
+for _ in range(20):
+    special_warehouse.store(
+        choice([Printer, Scanner, Xerox])(
+            ''.join(choices(digits + ascii_letters, k=8)),
+            choice(ascii_letters) + choice(digits)
+        )
+    )
+
+
+print('Global search:')
+pprint([(a, a.address, str(b)) for a, b in Warehouse.global_search('3')], width=100)
+
